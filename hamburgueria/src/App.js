@@ -10,11 +10,12 @@ import {
   Container,
   CartVazio,
 } from "./components/style/global";
+import Total from "./components/total";
 import Estante from "./components/Vitrine";
 
 function App() {
   const [cardapio, setCardapio] = useState([]);
-  const [filtro, setFiltro] = useState([]);
+  const [busca, setBusca] = useState([]);
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
@@ -24,56 +25,61 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    console.log("renderizou");
+  const filtro = cardapio.filter(
+    (produto) =>
+      produto.name
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .includes(busca) ||
+      produto.category
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .includes(busca)
+  );
 
-    return () => {
-      <>
-        <EstiloGlobal />
-        <Cabecalho />
-        <Container>
-          <Estante listaProdutos={cardapio} setCart={setCart} cart={cart} />
-          <CartContainer>
-            <div className="cart-header">
-              <h3>Carrinho de compras</h3>
-            </div>
-            {cart.map((produto) => (
-              <CartLi key={produto.id}>
-                <figure>
-                  <span>1</span>
-                  <img src={produto.img} />
-                </figure>
-                <div>
-                  <h3>{produto.name}</h3>
-                  <span>{produto.category}</span>
-                </div>
-                <div className="botoes">
-                  <button>+</button>
-                  <button>-</button>
-                  <button>Remover</button>
-                </div>
-              </CartLi>
-            ))}
-          </CartContainer>
-        </Container>
-      </>;
-    };
-  }, [cart]);
   return (
     <>
       <EstiloGlobal />
-      <Cabecalho />
+      <Cabecalho setBusca={setBusca} busca={busca} />
       <Container>
-        <Estante listaProdutos={cardapio} setCart={setCart} cart={cart} />
+        <Estante listaProdutos={filtro} setCart={setCart} cart={cart} />
         <CartContainer>
           <div className="cart-header">
             <h3>Carrinho de compras</h3>
           </div>
-
-          <CartVazio>
-            <h3>Sua sacola está vazia</h3>
-            <span>Adicione itens</span>
-          </CartVazio>
+          {cart.length > 0 ? (
+            <>
+              {cart.map((produto) => (
+                <CartLi key={produto.id}>
+                  <figure>
+                    <span>1</span>
+                    <img src={produto.img} />
+                  </figure>
+                  <div>
+                    <h3>{produto.name}</h3>
+                    <span>{produto.category}</span>
+                  </div>
+                  <div className="botoes">
+                    <button
+                      onClick={() => {
+                        setCart(cart.filter((elem) => elem.id !== produto.id));
+                      }}
+                    >
+                      Remover
+                    </button>
+                  </div>
+                </CartLi>
+              ))}
+              <Total cart={cart} setCart={setCart} />
+            </>
+          ) : (
+            <CartVazio>
+              <h3>Sua sacola está vazia</h3>
+              <span>Adicione itens</span>
+            </CartVazio>
+          )}
         </CartContainer>
       </Container>
     </>

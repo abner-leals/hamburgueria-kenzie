@@ -6,7 +6,20 @@ export default function Cabecalho({ busca, setBusca }) {
     <Header>
       <img src={logo} />
       <div>
-        <input type="text" placeholder="Digitar Pesquisa"></input>
+        <input
+          type="text"
+          placeholder="Digitar Pesquisa"
+          value={busca}
+          onChange={(e) => {
+            setBusca(
+              e.target.value
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+            );
+          }}
+        ></input>
+
         <button>Pesquisar</button>
       </div>
     </Header>

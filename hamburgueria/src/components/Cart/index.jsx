@@ -10,7 +10,7 @@ export default function Carrinho({ cart }) {
       {cart.map((produto) => (
         <CartLi key={produto.id}>
           <figure>
-            <span>1</span>
+            <span>{produto.quantidade}</span>
             <img src={produto.img} />
           </figure>
           <div>

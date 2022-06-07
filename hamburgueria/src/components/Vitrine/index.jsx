@@ -1,6 +1,7 @@
 import { Card, Vitrine } from "../style/global";
 
 export default function Estante({ listaProdutos, setCart, cart }) {
+  let cartinho = "";
   return (
     <Vitrine>
       {listaProdutos.map((produto) => (
@@ -14,10 +15,17 @@ export default function Estante({ listaProdutos, setCart, cart }) {
           </div>
           <p>R$ {produto.price.toFixed(2).replace(".", ",")}</p>
           <button
-            id={produto}
             onClick={() => {
-              setCart([cart, produto]);
-              console.log(cart);
+              cart.map((prod) => {
+                if (prod.id === produto.id) {
+                  cartinho = true;
+                }
+              });
+
+              if (!cartinho) {
+                setCart([...cart, { quantidade: 1, ...produto }]);
+              }
+              cartinho = false;
             }}
           >
             Adicionar

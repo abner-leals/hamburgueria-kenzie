@@ -107,7 +107,7 @@ export const Vitrine = styled.ul`
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
-    max-width: 68rem;
+    max-width: 89rem;
     padding: 1rem 1rem 2rem 0rem;
   }
   @media (min-width: 1001px) {
@@ -115,6 +115,8 @@ export const Vitrine = styled.ul`
     flex-wrap: wrap;
     gap: 2rem;
     padding: 1rem 1rem 2rem 0rem;
+    max-width: 89rem;
+    margin: auto;
   }
 `;
 export const Header = styled.div`
@@ -258,7 +260,7 @@ export const Header = styled.div`
   }
 `;
 export const CartContainer = styled.ul`
-  width: 32rem;
+  min-width: 32rem;
   max-height: 53rem;
   margin: 0 auto;
   background-color: ${corCinza0};
@@ -279,6 +281,23 @@ export const CartContainer = styled.ul`
       text-align: left;
       margin: 2rem;
     }
+  }
+  .subtotal {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    button {
+      background-color: ${corCinza50};
+      width: 90%;
+      margin: auto;
+    }
+  }
+  .total {
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 export const CartLi = styled.li`
